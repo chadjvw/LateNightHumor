@@ -17,10 +17,7 @@ rs.each do |row|
 	doc2 = Nokogiri::HTML.parse(row[0], nil, 'UTF-8')
 	# parse the date from the p.date field
 	date = doc2.css("p.date").text
-	puts date.class
-	#date = Date.parse(date)
-	puts date.class
-	puts date
+	date = Date.parse(date)
 	# initialize vars so we can use them later
 	joker = ""
 	jokee = ""
@@ -47,7 +44,7 @@ rs.each do |row|
 				# insert joke into table with all its data. date must be converted to s for some reason
 				# db.execute( "insert into jokes values (null, ?, ?, ? )", [date.to_s, joker, jokee])
 				# test string to make sure everything is working
-				# puts date.to_s + " : " + joker.to_s + " : " + jokee.to_s
+				puts date.to_s + " : " + joker.to_s + " : " + jokee.to_s
 			end
 		# same as above, except there is only one joke
 		elsif joke.css("p.joke").count == 1
@@ -59,7 +56,7 @@ rs.each do |row|
 			jokee = jokee[1..-1]
 			jokee.strip!
 			# db.execute( "insert into jokes values (null, ?, ?, ? )", [date.to_s, joker, jokee])
-			# puts date.to_s + " : " + joker.to_s + " : " + jokee.to_s
+			puts date.to_s + " : " + joker.to_s + " : " + jokee.to_s
 		end
 	end
 end
