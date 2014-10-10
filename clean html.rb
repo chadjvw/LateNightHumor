@@ -5,6 +5,7 @@ require 'tempfile'
 temp_file = Tempfile.new('temp.html')
 j_file = Tempfile.new("joke_temp.html")
 s_file = Tempfile.new("section_temp.html")
+t_file = Tempfile.new("another_temp.html")
 
 
 # open the file and tell it to do something. swap is now = to file
@@ -27,6 +28,7 @@ File.open('all.html', 'r') do |swap|
 			line.match(/\w+\s(O'|)\w+:(| )/) do |rec|
 				test = line.gsub(/\w+\s(O'|)\w+:(| )/,'</P></DIV><DIV CLASS="joke"><P CLASS="comedian">' + rec.to_s + '</P>')
 			end
+			test = test.gsub(/<P\sCLASS="c9"><SPAN\sCLASS="c2">&quot;/,"  ")
 		end
 		# this finds the end of the joke in the newer css and sets it as a joke p class.
 		test = test.sub(/<\/P><\/SPAN><\/P>/,'</P><P CLASS="joke">')
@@ -41,7 +43,7 @@ end
 temp_file.close
 
 # rename from temp to final
-File.rename(temp_file.path, 'jokes_to_be_updated.html')
+FileUtils.mv(temp_file.path, 'jokes_to_be_updated.html')
 
 # the section for the section
 File.open('section.html', 'r') do |swap|
@@ -68,13 +70,14 @@ File.open('section.html', 'r') do |swap|
 				test = line.gsub(/&quot;(\s|)\w+\s(O'|)\w+:(| )<\/SPAN><\/P>/,'</P></DIV><DIV CLASS="joke"><P CLASS="comedian">' + rec.to_s + '</P><P CLASS="joke">')
 			end
 		end
+		# test = test.sub(/<P CLASS="c(8|9)"><SPAN CLASS="c2">/,'')
 		#test = test
 		s_file.puts test
 	end
 end
 
 # rename from temp to final
-File.rename(s_file.path, 'jokes_to_be_updated2.html')
+FileUtils.mv(s_file.path, 'jokes_to_be_updated2.html')
 
 # always close
 s_file.close
@@ -89,13 +92,7 @@ File.open('jokes_to_be_updated2.html', 'r') do |swap|
 	end
 end
 
-
-File.rename(j_file.path, 'jokes_to_be_updated2.html')
+FileUtils.mv(j_file.path, 'jokes_to_be_updated2.html')
 
 j_file.close
 
-# appeend jokes 2 onto jokes
-to_append = File.read("jokes_to_be_updated2.html")
-File.open("jokes_to_be_updated.html", "a") do |handle|
-  handle.puts to_append
-end

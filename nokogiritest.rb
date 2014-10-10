@@ -1,5 +1,6 @@
 require 'Nokogiri'
 require 'date'
+require 'sqlite3'
 
 
 
@@ -32,9 +33,26 @@ b = 0
 
 
 
-# open the file to be appended
-to_append = File.read("jokes_to_be_updated2.html")
-# append weird section to main section
-File.open("jokes_to_be_updated.html", "a") do |handle|
-  handle.puts to_append
+
+
+# set the db. jokes.sqlite is in the same folder as this file.
+db = SQLite3::Database.open 'jokes.sqlite'
+
+# prepare db with select statement
+stm = db.prepare "SELECT * FROM docfull" 
+# execute the select. rs now has all the records
+rs = stm.execute 
+
+# for each record do row.
+rs.each do |row|
+	# row is an array with row data. so row[0] hold data from the first colum
+	# make nokogiri parse the data from the docufull table as html
+	doc2 = Nokogiri::HTML.parse(row[0], nil, 'UTF-8')
+	# parse the date from the p.date field
+	date = doc2.css("p.joke p.c9")
+	# date = Date.parse(date)
+	# initialize vars so we can use them later
+	puts date
+	joker = ""
+	jokee = ""
 end
