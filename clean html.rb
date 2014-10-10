@@ -93,3 +93,9 @@ end
 File.rename(j_file.path, 'jokes_to_be_updated2.html')
 
 j_file.close
+
+# appeend jokes 2 onto jokes
+to_append = File.read("jokes_to_be_updated2.html")
+File.open("jokes_to_be_updated.html", "a") do |handle|
+  handle.puts to_append
+end
