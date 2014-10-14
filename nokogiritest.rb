@@ -49,7 +49,7 @@ rs.each do |row|
 	# make nokogiri parse the data from the docufull table as html
 	doc2 = Nokogiri::HTML.parse(row[0], nil, 'UTF-8')
 	# parse the date from the p.date field
-	date = doc2.css("p.joke p.c9")
+	date = doc2.css("p.joke")
 	# date = Date.parse(date)
 	# initialize vars so we can use them later
 	puts date
