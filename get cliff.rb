@@ -11,7 +11,7 @@ require 'open-uri'
 db = SQLite3::Database.open 'jokes.sqlite'
 
 # prepare db with select statement
-stm = db.prepare "SELECT key, joke, cliff FROM jokestwo LIMIT 5" 
+stm = db.prepare "SELECT key, joke, cliff FROM jokestwo" 
 # execute the select. rs now has all the records
 rs = stm.execute 
 
@@ -25,9 +25,8 @@ rs.each do |row|
 	url = URI::encode(joke)
 	# get cliff info from MIT
 	cliff = RestClient.post 'http://civicdev.media.mit.edu:8080/CLIFF/parse/text?q=' + url + '&replaceAllDemonyms=true', :content_type => :json, :accept => :json
-	# insert data back into db
+	# update cliff data into row
 	db.execute( "update jokestwo set cliff = ? where key = ?", [cliff, key])
 	i += 1
-	puts i
 end
 puts i
