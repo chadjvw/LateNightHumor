@@ -12,6 +12,7 @@ test.xml
 test2.xml
 three.rb
 two.rb
+five.rb
 =======
 *.gem
 *.rbc
